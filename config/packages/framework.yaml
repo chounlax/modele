@@ -13,3 +13,11 @@ when@test:
         test: true
         session:
             storage_factory_id: session.storage.factory.mock_file
+        # compteur anti-force-brute en mémoire : il repart de zéro à chaque requête de test
+        cache:
+            pools:
+                cache.rate_limiter:
+                    adapter: cache.adapter.array
+        # remplace l'API Have I Been Pwned par un faux (mock)
+        http_client:
+            mock_response_factory: App\Tests\Mock\PwnedPasswordsMock
