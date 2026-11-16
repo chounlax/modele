@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier mon profil · ProjetAS{% endblock %}
+
+{% block body %}
+<section class="auth-page">
+    <div class="card auth-card">
+        <h1>Modifier mon profil</h1>
+        {{ form_start(form) }}
+            {{ form_row(form.prenom) }}
+            {{ form_row(form.nom) }}
+            {{ form_row(form.adresse) }}
+            {{ form_row(form.codePostal) }}
+            {{ form_row(form.ville) }}
+            <button type="submit" class="btn btn-primary btn-block">Enregistrer</button>
+        {{ form_end(form) }}
+        <p class="auth-footer"><a href="{{ path('app_profile') }}">Retour au profil</a></p>
+    </div>
+</section>
+{% endblock %}
