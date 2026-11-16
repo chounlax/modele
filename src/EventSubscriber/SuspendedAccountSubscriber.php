@@ -25,7 +25,8 @@ final class SuspendedAccountSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         // priorité inférieure au pare-feu (8) : l'utilisateur est déjà chargé
-        return [KernelEvents::REQUEST => ['onKernelRequest', 0]];
+        // return [KernelEvents::REQUEST => ['onKernelRequest', 0]];
+        return [];
     }
 
     public function onKernelRequest(RequestEvent $event): void
