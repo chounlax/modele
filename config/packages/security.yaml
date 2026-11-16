@@ -25,7 +25,7 @@ security:
             provider: app_user_provider
             custom_authenticator: App\Security\AppCustomAuthenticator
             # refuse la connexion des comptes suspendus
-            # user_checker: App\Security\UserChecker
+            user_checker: App\Security\UserChecker
 
             # Protection contre la force brute :
             # 5 tentatives échouées maximum par 15 minutes,
