@@ -1,0 +1,47 @@
+name: Tests automatisés
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  tests:
+    # machine temporaire de GitHub, détruite après le job
+    runs-on: ubuntu-latest
+
+    # base MariaDB temporaire : aucun lien avec les nuages de dev et de test
+    services:
+      mariadb:
+        image: mariadb:10.11
+        env:
+          MARIADB_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s --health-timeout=5s --health-retries=5
+
+    env:
+      DATABASE_URL: mysql://root:root@127.0.0.1:3306/app?serverVersion=10.11.0-MariaDB&charset=utf8mb4
+
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Installer PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_mysql, intl
+
+      - name: Installer les dépendances
+        run: composer install --no-interaction --no-progress
+
+      - name: Préparer la base de test
+        run: |
+          php bin/console doctrine:database:create --env=test
+          php bin/console doctrine:migrations:migrate --env=test --no-interaction
+          php bin/console doctrine:fixtures:load --env=test --no-interaction
+
+      - name: Lancer les tests
+        run: vendor/bin/phpunit --testdox
