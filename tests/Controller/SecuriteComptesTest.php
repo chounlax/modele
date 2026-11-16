@@ -56,7 +56,8 @@ class SecuriteComptesTest extends ApplicationTestCase
         $a = AppFixtures::MDP_ALICE;
         $b = 'Deuxieme#Secret2026';
         $c = 'Troisieme#Secret2026';
-        $this->connecterEn('alice@test.fr');
+        $this->connecter('alice@test.fr', $a);
+        $this->assertConnecte();
 
         $this->changerMotDePasse($a, $b);
         $this->assertResponseRedirects('/private/profil');
